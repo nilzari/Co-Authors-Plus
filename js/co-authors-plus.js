@@ -193,7 +193,7 @@ jQuery( document ).ready(function () {
 	function coauthors_autosuggest_select() {
 		$this = jQuery( this );
 		var vals = this.value.split( '|' );
-                console.log(vals)
+                
 		var author = {}
 		author.id = jQuery.trim( vals[0] );
 		author.login = jQuery.trim( vals[1] );
