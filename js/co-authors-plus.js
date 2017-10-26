@@ -193,13 +193,14 @@ jQuery( document ).ready(function () {
 	function coauthors_autosuggest_select() {
 		$this = jQuery( this );
 		var vals = this.value.split( '|' );
-
+                console.log(vals)
 		var author = {}
 		author.id = jQuery.trim( vals[0] );
 		author.login = jQuery.trim( vals[1] );
 		author.name = jQuery.trim( vals[2] );
 		author.email = jQuery.trim( vals[3] );
 		author.nicename = jQuery.trim( vals[4] );
+                author.avatar = jQuery.trim( vals[5] );
 
 		if ( author.id=='New' ) {
 			coauthors_new_author_display( name );
@@ -249,9 +250,11 @@ jQuery( document ).ready(function () {
 	}
 
 	function coauthors_create_author_gravatar( author, size ) {
-
-		var gravatar_link = get_gravatar_link( author.email, size );
-
+                if(author.avatar == '')
+                    var gravatar_link = get_gravatar_link( author.email, size );
+                else
+                    var gravatar_link = author.avatar
+               
 		var $gravatar = jQuery( '<img/>' )
 							.attr( 'alt', author.name )
 							.attr( 'src', gravatar_link )
@@ -381,12 +384,12 @@ jQuery( document ).ready(function () {
 			hide_loading();
 	});
 
-	if ( 'post-php' == adminpage || 'post-new-php' == adminpage ) {
+	if ( 'post-php' == adminpage || 'post-new-php' == adminpage ) { 
 		var $post_coauthor_logins = jQuery( 'input[name="coauthors[]"]' );
 		var $post_coauthor_names = jQuery( 'input[name="coauthorsinput[]"]' );
 		var $post_coauthor_emails = jQuery( 'input[name="coauthorsemails[]"]' );
 		var $post_coauthor_nicenames = jQuery( 'input[name="coauthorsnicenames[]"]' );
-
+                var $post_coauthor_avatar = jQuery( 'input[name="coauthorsavatar[]"]' );
 		var post_coauthors = [];
 
 		for ( var i = 0; i < $post_coauthor_logins.length; i++ ) {
@@ -394,7 +397,8 @@ jQuery( document ).ready(function () {
 				login: $post_coauthor_logins[i].value,
 				name: $post_coauthor_names[i].value,
 				email: $post_coauthor_emails[i].value,
-				nicename: $post_coauthor_nicenames[i].value
+				nicename: $post_coauthor_nicenames[i].value,
+                                avatar: $post_coauthor_avatar[i].value
 			});
 		}
 
