@@ -375,6 +375,7 @@ class CoAuthors_Plus {
 				<?php
 				foreach ( $coauthors as $coauthor ) :
 					$count++;
+                                        $thumbnail_url = get_the_post_thumbnail_url($coauthor);
 					?>
 					<li>
 						<?php echo get_avatar( $coauthor->user_email, $this->gravatar_size ); ?>
@@ -383,6 +384,7 @@ class CoAuthors_Plus {
 							<input type="text" name="coauthors[]" value="<?php echo esc_attr( $coauthor->user_login ); ?>" />
 							<input type="text" name="coauthorsemails[]" value="<?php echo esc_attr( $coauthor->user_email ); ?>" />
 							<input type="text" name="coauthorsnicenames[]" value="<?php echo esc_attr( $coauthor->user_nicename ); ?>" />
+                                                        <input type="text" name="coauthorsavatar[]" value="<?php echo esc_attr($thumbnail_url); ?>" />
 						</span>
 					</li>
 					<?php
@@ -1093,13 +1095,16 @@ class CoAuthors_Plus {
 		$search = sanitize_text_field( strtolower( $_REQUEST['q'] ) );
 		$ignore = array_map( 'sanitize_text_field', explode( ',', $_REQUEST['existing_authors'] ) );
 
-		$authors = $this->search_authors( $search, $ignore );
+		$authors = $this->search_authors( $search, $ignore );                
 
 		// Return message if no authors found
 		if( empty( $authors ) ) echo apply_filters( 'coauthors_no_matching_authors_message', 'Sorry, no matching authors found.');
-
+                
 		foreach ( $authors as $author ) {
-			echo esc_html( $author->ID . ' | ' . $author->user_login . ' | ' . $author->display_name . ' | ' . $author->user_email . ' | ' . $author->user_nicename ) . "\n";
+                    
+                        $thumbnail = get_the_post_thumbnail_url( $author );
+                        
+                        echo esc_html($author->ID) . ' | ' . esc_html($author->user_login) . ' | ' . esc_html($author->display_name) . ' | ' . esc_html($author->user_email) . ' | ' . esc_html($author->user_nicename) . '<span class="noshow">|' . esc_html($thumbnail) . "</span>" . "\n";
 		}
 
 		die();

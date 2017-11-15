@@ -6,6 +6,8 @@
 	margin-left: 5em;
 }
 
+.noshow{display:none}
+
 #coauthors-list {
 	width: 100%;
 	padding: 0 5px;
